@@ -29,13 +29,16 @@ The script automatically:
    cd noter
    ```
 
-2. Configure the Obsidian vault path in `noter.py`:
-   ```python
-   # Configure your Obsidian Vault Path here
-   OBSIDIAN_VAULT_PATH = r"YOUR_OBSIDIAN_VAULT_PATH\Daily Notes"
+2. Create a `config.json` file in the same directory:
+   ```json
+   {
+       "obsidian_vault_path": "C:/Users/YourUsername/Obsidian Vault/Daily Notes"
+   }
    ```
 
-3. Run the script:
+3. Update the vault path in `config.json` to match your Obsidian vault location.
+
+4. Run the script:
    ```
    python noter.py
    ```
@@ -43,7 +46,9 @@ The script automatically:
 ### Option 2: Use the Executable (Windows Only)
 
 1. Download the latest release from the [releases page](https://github.com/demiller/noter/releases).
-2. Run `noter.exe`
+2. Create or copy the `config.json` file to the same directory as noter.exe
+3. Update the vault path in `config.json`
+4. Run `noter.exe`
 
 ### Option 3: Compile Your Own Executable
 
@@ -57,7 +62,16 @@ The script automatically:
    pyinstaller --onefile noter.py
    ```
 
-3. The executable will be created in the `dist` directory.
+3. The executable will be created in the `dist` directory
+4. Copy `config.json` to the same directory as the executable
+
+### Adding to System PATH (Windows)
+
+To run noter from any directory:
+
+1. Copy both `noter.exe` and `config.json` to `%USERPROFILE%\AppData\Local\Microsoft\WindowsApps`
+2. Update the vault path in the copied `config.json`
+3. You can now run `noter` from any directory
 
 ## Usage
 
@@ -97,7 +111,7 @@ The script automatically:
 
 ### Configuration File
 
-Noter now uses a `config.json` file for configuration instead of hardcoding values in the script. The first time you run the script, it will create a default `config.json` file in the same directory. You'll need to update this file with your Obsidian vault path before using the script.
+Noter uses a `config.json` file for all configuration settings. This file should be located in the same directory as the script or executable. The first time you run noter without a config file, it will create a default one that you'll need to update.
 
 Example `config.json`:
 ```json
@@ -106,11 +120,15 @@ Example `config.json`:
 }
 ```
 
-Note: Use forward slashes (/) in the path, even on Windows systems.
+Important notes:
+- Use forward slashes (/) in the path, even on Windows systems
+- The config file must be in the same directory as the script/executable
+- You must update the path to match your actual Obsidian vault location
+- When moving the executable, always bring the config file with it
 
-If you move the executable to a different location, make sure to:
-1. Copy the `config.json` file to the same directory as the executable
-2. Update the vault path in the config file to match your new environment
+If you're using the Windows PATH installation method (copying to WindowsApps), make sure to:
+1. Keep both the executable and config file in the WindowsApps directory
+2. Always edit the config file in that location, not in the original directory
 
 ## Daily Note Format
 
