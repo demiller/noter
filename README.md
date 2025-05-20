@@ -133,22 +133,22 @@ aliases: []
 
 ## 🔁 Reviews or Highlights Revisited
 
-```dataview
+\```dataview
 list
 from ""
 where reviewed <= date(today) - dur(30 days)
 sort reviewed asc
 limit 5
-```
+\```
 
 ## 📓 Notes Created or Touched Today
 
-```dataview
+\```dataview
 table file.name, file.mtime
 from ""
 where file.mtime >= date(today)
 sort file.mtime desc
-```
+\```
 
 ## ✍️ Notes & Observations
 
