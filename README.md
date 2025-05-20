@@ -95,14 +95,22 @@ The script automatically:
 
 ## Configuration
 
-The main configuration is the path to your Obsidian vault's Daily Notes folder. You can modify this in the `noter.py` file:
+### Configuration File
 
-```python
-# Configure your Obsidian Vault Path here
-OBSIDIAN_VAULT_PATH = r"C:\Users\DougMiller\OneDrive - Brightworks Group, LLC\Obsidian_Vault\Daily Notes"
+Noter now uses a `config.json` file for configuration instead of hardcoding values in the script. The first time you run the script, it will create a default `config.json` file in the same directory. You'll need to update this file with your Obsidian vault path before using the script.
+
+Example `config.json`:
+```json
+{
+    "obsidian_vault_path": "C:/Users/YourUsername/Obsidian Vault/Daily Notes"
+}
 ```
 
-Replace this with the path to your own Obsidian vault's Daily Notes folder.
+Note: Use forward slashes (/) in the path, even on Windows systems.
+
+If you move the executable to a different location, make sure to:
+1. Copy the `config.json` file to the same directory as the executable
+2. Update the vault path in the config file to match your new environment
 
 ## Daily Note Format
 

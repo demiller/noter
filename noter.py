@@ -1,13 +1,41 @@
 import os
 import re
+import json
 from datetime import datetime
 
-# Configure your Obsidian Vault Path here
-OBSIDIAN_VAULT_PATH = r"C:\Users\DougMiller\OneDrive - Brightworks Group, LLC\Obsidian_Vault\Daily Notes"
+CONFIG_FILE = "config.json"
+DEFAULT_CONFIG = {
+    "obsidian_vault_path": "C:/Users/YourUsername/Obsidian Vault/Daily Notes"
+}
+
+def load_config():
+    """Load configuration from config.json, create if it doesn't exist"""
+    try:
+        if not os.path.exists(CONFIG_FILE):
+            with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
+                json.dump(DEFAULT_CONFIG, f, indent=4)
+            print(f"Configuration file created at: {os.path.abspath(CONFIG_FILE)}")
+            print("Please update the Obsidian vault path in the config file before continuing.")
+            return None
+
+        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            
+        # Validate the vault path exists
+        if not os.path.exists(config["obsidian_vault_path"]):
+            print(f"Error: Obsidian vault directory not found at: {config['obsidian_vault_path']}")
+            print(f"Please update the path in {CONFIG_FILE}")
+            return None
+            
+        return config
+
+    except Exception as e:
+        print(f"Error loading configuration: {e}")
+        return None
 
 # Function to get the current note file path based on user input
-def get_note_path(note_date):
-    return os.path.join(OBSIDIAN_VAULT_PATH, f"{note_date}.md")
+def get_note_path(note_date, config):
+    return os.path.join(config["obsidian_vault_path"], f"{note_date}.md")
 
 # Function to create a basic template for a new note
 def create_basic_template(note_date, note_content):
@@ -74,10 +102,10 @@ def extract_frontmatter(content):
 
 
 # Function to append a note to the specified note file
-def append_to_note(note, note_date):
+def append_to_note(note, note_date, config):
     """Add a note to the Notes & Observations section of the daily note file"""
     try:
-        note_path = get_note_path(note_date)
+        note_path = get_note_path(note_date, config)
         timestamp = datetime.now().strftime('%H:%M')
         formatted_note = f"- [{timestamp}] {note}\n"
         
@@ -174,24 +202,24 @@ def main():
     try:
         print("Noter - Append notes to your Obsidian daily notes")
         print("=" * 50)
-        note_date = datetime.now().strftime('%Y-%m-%d')  # Get current date for note file name
         
-        # Check if Obsidian vault directory exists
-        if not os.path.exists(OBSIDIAN_VAULT_PATH):
-            print(f"Error: Obsidian vault directory not found at: {OBSIDIAN_VAULT_PATH}")
-            print("Please check the OBSIDIAN_VAULT_PATH configuration in noter.py")
+        # Load configuration
+        config = load_config()
+        if not config:
             return
+            
+        note_date = datetime.now().strftime('%Y-%m-%d')  # Get current date for note file name
         
         note = input("Enter the note you want to append: ")
         if not note.strip():
             print("Note cannot be empty. Exiting.")
             return
         
-        success = append_to_note(note, note_date)
+        success = append_to_note(note, note_date, config)
         if success:
-            print(f"✓ Note successfully added to {get_note_path(note_date)}")
+            print(f"✓ Note successfully added to {get_note_path(note_date, config)}")
         else:
-            print(f"✗ Failed to add note to {get_note_path(note_date)}")
+            print(f"✗ Failed to add note to {get_note_path(note_date, config)}")
     
     except KeyboardInterrupt:
         print("\nOperation cancelled by user. Exiting.")
