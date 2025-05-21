@@ -167,7 +167,7 @@ sort file.mtime desc
             if self._has_unresolved_variables(template):
                 logger.warning("Template contains unresolved variables")
                 return None
-            
+
             # Perform a final check to ensure there are no malformed or unexpected patterns
             try:
                 self._final_template_check(template)
@@ -187,73 +187,70 @@ sort file.mtime desc
     def _validate_template_variables(self, template: str) -> None:
         """Validate that template variables are properly formatted"""
         import re
-        
+
         # Define the valid variable names
-        valid_variable_names = [
-            "note_date", "weekday", "month", "day", 
-            "year", "note_content"
-        ]
-        
+        valid_variable_names = ["note_date", "weekday", "month", "day", "year", "note_content"]
+
         # Check for mismatched braces - look for {{ without matching }}
-        open_braces = template.count('{{')
-        close_braces = template.count('}}')
-        
+        open_braces = template.count("{{")
+        close_braces = template.count("}}")
+
         if open_braces != close_braces:
             logger.warning("Template has mismatched variable braces")
             raise ValueError("Template has mismatched variable braces")
-        
+
         # Only continue validation if braces are balanced
         if open_braces > 0:
             # Find all occurrences of template variables (things between {{ and }})
-            variable_pattern = r'{{(.*?)}}'
+            variable_pattern = r"{{(.*?)}}"
             template_vars = re.findall(variable_pattern, template)
-            
+
             # Check for malformed variables that aren't properly formatted with {{ }}
             # This pattern looks for single braces that aren't part of {{ or }}
-            malformed_pattern = r'(?<!\{)\{(?!\{)|(?<!\})\}(?!\})'
+            malformed_pattern = r"(?<!\{)\{(?!\{)|(?<!\})\}(?!\})"
             malformed_vars = re.search(malformed_pattern, template)
-            
+
             if malformed_vars:
                 logger.warning("Malformed template variables found: single braces that aren't part of variable syntax")
                 raise ValueError("Template contains malformed variables")
-            
+
             # Check for nested braces
-            nested_pattern = r'{{[^}]*{{.*?}}[^{]*}}'
+            nested_pattern = r"{{[^}]*{{.*?}}[^{]*}}"
             nested_vars = re.findall(nested_pattern, template)
             if nested_vars:
                 logger.warning(f"Nested template variables found: {nested_vars}")
                 raise ValueError("Template contains nested variable braces")
-            
+
             # Check for unknown variables
             unknown_vars = [var.strip() for var in template_vars if var.strip() not in valid_variable_names]
             if unknown_vars:
                 logger.warning("Template contains unresolved variables")
                 raise ValueError("Template contains unknown variables")
-            
+
     def _has_unresolved_variables(self, template: str) -> bool:
         """Check if there are any unresolved template variables after replacement"""
         import re
-        
+
         # Look for any remaining {{variable}} patterns, being careful to match complete variable syntax
         # This regex looks for {{ followed by any characters (including spaces) followed by }}
-        return bool(re.search(r'{{[^}]*}}', template))
-        
+        return bool(re.search(r"{{[^}]*}}", template))
+
     def _final_template_check(self, template: str) -> None:
         """Perform final checks on the template after variable replacement"""
         import re
-        
+
         # Check for any remaining braces that might indicate partial replacements
         # This pattern finds a single { or } that isn't part of {{ or }}
-        single_brace_pattern = r'(?<!\{)\{(?!\{)|(?<!\})\}(?!\})'
+        single_brace_pattern = r"(?<!\{)\{(?!\{)|(?<!\})\}(?!\})"
         if re.search(single_brace_pattern, template):
             raise ValueError("Template contains unpaired braces after variable replacement")
-            
+
         # Check for empty sections that might indicate failed replacements
         # This pattern looks for ## headers with no content between them
-        empty_section_pattern = r'##\s*\n\n##'
+        empty_section_pattern = r"##\s*\n\n##"
         if re.search(empty_section_pattern, template):
             raise ValueError("Template contains empty sections after variable replacement")
-        
+
         # Ensure template contains some basic content after variable replacement
         if not template.strip():
             raise ValueError("Template is empty after variable replacement")
@@ -276,23 +273,23 @@ class NoteManager:
         try:
             note_path = self.get_note_path(note_date)
             timestamp = datetime.now().strftime(self.config.get("time_format", "%H:%M"))
-            
+
             # Format the note with tags if provided
             tag_str = ""
             if tags and len(tags) > 0:
                 tag_str = f" #{' #'.join(tags)}"
-                
+
             formatted_note = f"- [{timestamp}] {note}{tag_str}\n"
-            
+
             if not os.path.exists(note_path):
                 with open(note_path, "w", encoding="utf-8") as file:
                     file.write(self.template_manager.create_basic_template(note_date, formatted_note.rstrip()))
                 logger.info(f"Created new daily note file for {note_date}")
                 return True
-            
+
             with open(note_path, "r", encoding="utf-8") as file:
                 lines = file.readlines()
-            
+
             # Find the Notes & Observations section
             notes_start = -1
             section_end = len(lines)
@@ -302,24 +299,24 @@ class NoteManager:
                 elif notes_start != -1 and line.startswith("## "):
                     section_end = i
                     break
-            
+
             if notes_start == -1:
                 logger.error("Could not find Notes & Observations section")
                 return False
-            
+
             # Find the last content bullet point
             last_bullet = notes_start
             for i in range(notes_start + 1, section_end):
                 line = lines[i].rstrip()
                 if line.startswith("- ") and not line.strip() == "-":
                     last_bullet = i
-            
+
             # Add the note at the appropriate position
             if last_bullet > notes_start:
                 # Add after the last bullet
                 insert_at = last_bullet + 1
                 lines.insert(insert_at, formatted_note)
-                
+
                 # Remove any trailing empty bullets
                 i = len(lines) - 1
                 while i > insert_at:
@@ -337,13 +334,13 @@ class NoteManager:
                 lines.insert(notes_start + 2, formatted_note)
                 # Add empty bullet only for the first note
                 lines.insert(notes_start + 3, "- \n")
-            
+
             # Write back to file
             with open(note_path, "w", encoding="utf-8") as file:
                 file.writelines(lines)
-            
+
             return True
-        
+
         except Exception as e:
             logger.error(f"Error appending note: {e}")
             return False

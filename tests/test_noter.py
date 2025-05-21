@@ -26,9 +26,9 @@ def capture_logs():
     # Clear existing handlers and add our capture handler
     logger.handlers = [handler]
     logger.setLevel(logging.INFO)
-    
+
     yield log_capture
-    
+
     # Restore original handlers and level
     logger.handlers = original_handlers
     logger.setLevel(original_level)
@@ -39,21 +39,17 @@ def test_invalid_template_content(tmp_path, capture_logs):
     # Create a template with malformed variables
     template_file = tmp_path / "invalid_template.md"
     template_file.write_text("Invalid {{template} content with {mismatched} braces", encoding="utf-8")
-    
-    config = {
-        "template_path": str(template_file),
-        "date_format": "%Y-%m-%d",
-        "time_format": "%H:%M"
-    }
-    
+
+    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "Test note")
-    
+
     # Should fall back to default template
     assert "Daily Note - 2025-05-21" in result
     assert "## ✍️ Notes & Observations" in result
     assert "Test note" in result
-    
+
     # Check logs for fallback message
     log_content = capture_logs.getvalue()
     assert "WARNING - Template has mismatched variable braces" in log_content
@@ -66,21 +62,17 @@ def test_invalid_template_content_another_type(tmp_path, capture_logs):
     # Create a template with unbalanced braces
     template_file = tmp_path / "unbalanced_template.md"
     template_file.write_text("Template with {{extra {{ braces}}", encoding="utf-8")
-    
-    config = {
-        "template_path": str(template_file),
-        "date_format": "%Y-%m-%d",
-        "time_format": "%H:%M"
-    }
-    
+
+    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "Test note")
-    
+
     # Should fall back to default template
     assert "Daily Note - 2025-05-21" in result
     assert "## ✍️ Notes & Observations" in result
     assert "Test note" in result
-    
+
     # Check logs for fallback message
     log_content = capture_logs.getvalue()
     assert "WARNING - Template has mismatched variable braces" in log_content
@@ -100,22 +92,18 @@ title: "📅 {{note_date}} 📝"
 ⭐ End of template ⭐
 """
     template_file.write_text(template_content, encoding="utf-8")
-    
-    config = {
-        "template_path": str(template_file),
-        "date_format": "%Y-%m-%d",
-        "time_format": "%H:%M"
-    }
-    
+
+    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "Test note with 😊 emoji")
-    
+
     # Verify template elements and emojis
     assert "📅 2025-05-21 📝" in result
     assert "🌟 Notes for" in result
     assert "Test note with 😊 emoji" in result
     assert "⭐ End of template ⭐" in result
-    
+
     # Check logs for success message
     log_content = capture_logs.getvalue()
     assert "INFO - Successfully applied custom template" in log_content
@@ -139,22 +127,18 @@ tags: [custom, template]
 - Year: {{year}}
 """
     template_file.write_text(template_content, encoding="utf-8")
-    
-    config = {
-        "template_path": str(template_file),
-        "date_format": "%Y-%m-%d",
-        "time_format": "%H:%M"
-    }
-    
+
+    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "This is a test note")
-    
+
     # Verify template content
     assert "Custom Template - 2025-05-21" in result
     assert "tags: [custom, template]" in result
     assert "# Notes for" in result
     assert "This is a test note" in result
-    
+
     # Check logs for success message
     log_content = capture_logs.getvalue()
     assert "INFO - Successfully applied custom template" in log_content
@@ -172,21 +156,17 @@ title: "{{note_date}}"
 {{unknown_variable}}
 """
     template_file.write_text(template_content, encoding="utf-8")
-    
-    config = {
-        "template_path": str(template_file),
-        "date_format": "%Y-%m-%d",
-        "time_format": "%H:%M"
-    }
-    
+
+    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "Test note")
-    
+
     # Should fall back to default template
     assert "Daily Note - 2025-05-21" in result
     assert "## ✍️ Notes & Observations" in result
     assert "Test note" in result
-    
+
     # Check logs for fallback message
     log_content = capture_logs.getvalue()
     assert "WARNING - Template contains unresolved variables" in log_content
@@ -203,36 +183,31 @@ title: "{{note_date}}"
 {{note_content}}
 """
     valid_template_file.write_text(valid_template_content, encoding="utf-8")
-    
-    config = {
-        "template_path": str(valid_template_file),
-        "date_format": "%Y-%m-%d",
-        "time_format": "%H:%M"
-    }
-    
+
+    config = {"template_path": str(valid_template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+
     template_manager = TemplateManager(config)
     template_manager.create_basic_template("2025-05-21", "Test note")
-    
+
     # Check logs
     log_content = capture_logs.getvalue()
     assert "INFO - Successfully applied custom template" in log_content
-    
+
     # Clear log capture
     capture_logs.truncate(0)
     capture_logs.seek(0)
-    
+
     # 2. Now test with invalid template
     invalid_template_file = tmp_path / "invalid.md"
     invalid_template_content = "Invalid {{template}"
     invalid_template_file.write_text(invalid_template_content, encoding="utf-8")
-    
+
     config["template_path"] = str(invalid_template_file)
-    
+
     template_manager = TemplateManager(config)
     template_manager.create_basic_template("2025-05-21", "Test note")
-    
+
     # Check logs again
     log_content = capture_logs.getvalue()
     assert "WARNING - Falling back to default template" in log_content
     assert "INFO - Successfully applied custom template" not in log_content
-

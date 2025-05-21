@@ -1,5 +1,4 @@
-('C:\\Users\\DougMiller\\OneDrive\\Documents\\Python '
- 'Scripts\\noter\\dist\\noter.exe',
+('C:\\Users\\DougMiller\\Python Scripts\\noter\\dist\\noter.exe',
  True,
  False,
  False,
@@ -30,31 +29,29 @@
  None,
  None,
  None,
- 'C:\\Users\\DougMiller\\OneDrive\\Documents\\Python '
- 'Scripts\\noter\\build\\noter\\noter.pkg',
+ 'C:\\Users\\DougMiller\\Python Scripts\\noter\\build\\noter\\noter.pkg',
  [('pyi-contents-directory _internal', '', 'OPTION'),
   ('PYZ-00.pyz',
-   'C:\\Users\\DougMiller\\OneDrive\\Documents\\Python '
-   'Scripts\\noter\\build\\noter\\PYZ-00.pyz',
+   'C:\\Users\\DougMiller\\Python Scripts\\noter\\build\\noter\\PYZ-00.pyz',
    'PYZ'),
   ('struct',
-   'C:\\Users\\DougMiller\\OneDrive\\Documents\\Python '
+   'C:\\Users\\DougMiller\\Python '
    'Scripts\\noter\\build\\noter\\localpycs\\struct.pyc',
    'PYMODULE'),
   ('pyimod01_archive',
-   'C:\\Users\\DougMiller\\OneDrive\\Documents\\Python '
+   'C:\\Users\\DougMiller\\Python '
    'Scripts\\noter\\build\\noter\\localpycs\\pyimod01_archive.pyc',
    'PYMODULE'),
   ('pyimod02_importers',
-   'C:\\Users\\DougMiller\\OneDrive\\Documents\\Python '
+   'C:\\Users\\DougMiller\\Python '
    'Scripts\\noter\\build\\noter\\localpycs\\pyimod02_importers.pyc',
    'PYMODULE'),
   ('pyimod03_ctypes',
-   'C:\\Users\\DougMiller\\OneDrive\\Documents\\Python '
+   'C:\\Users\\DougMiller\\Python '
    'Scripts\\noter\\build\\noter\\localpycs\\pyimod03_ctypes.pyc',
    'PYMODULE'),
   ('pyimod04_pywin32',
-   'C:\\Users\\DougMiller\\OneDrive\\Documents\\Python '
+   'C:\\Users\\DougMiller\\Python '
    'Scripts\\noter\\build\\noter\\localpycs\\pyimod04_pywin32.pyc',
    'PYMODULE'),
   ('pyiboot01_bootstrap',
@@ -63,9 +60,9 @@
   ('pyi_rth_inspect',
    'C:\\Users\\DougMiller\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_inspect.py',
    'PYSOURCE'),
-  ('noter',
+  ('__main__',
    'C:\\Users\\DougMiller\\OneDrive\\Documents\\Python '
-   'Scripts\\noter\\noter.py',
+   'Scripts\\noter\\noter\\__main__.py',
    'PYSOURCE'),
   ('python311.dll',
    'C:\\Program '
@@ -108,13 +105,13 @@
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\\DLLs\\libcrypto-3.dll',
    'BINARY'),
   ('base_library.zip',
-   'C:\\Users\\DougMiller\\OneDrive\\Documents\\Python '
+   'C:\\Users\\DougMiller\\Python '
    'Scripts\\noter\\build\\noter\\base_library.zip',
    'DATA')],
  [],
  False,
  False,
- 1733258061,
+ 1747848955,
  [('run.exe',
    'C:\\Users\\DougMiller\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\run.exe',
    'EXECUTABLE')],
