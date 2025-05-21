@@ -29,6 +29,10 @@ jobs:
         if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
         pip install -e .
         
+    - name: Show package versions
+      run: |
+        pip list
+        
     - name: Check formatting with black
       run: |
         black --check .

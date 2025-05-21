@@ -53,8 +53,12 @@ class ConfigManager:
                 config: Dict[str, Optional[str]] = json.load(f)
 
             # Validate the vault path exists
-            if not os.path.exists(config["obsidian_vault_path"]):
-                logger.error(f"Error: Obsidian vault directory not found at: {config['obsidian_vault_path']}")
+            vault_path = config["obsidian_vault_path"]
+            if vault_path is None:
+                logger.error("Error: Obsidian vault path is not configured")
+                return None
+            if not os.path.exists(vault_path):
+                logger.error(f"Error: Obsidian vault directory not found at: {vault_path}")
                 logger.error(f"Please update the path in {self.config_path}")
                 return None
 
@@ -138,6 +142,10 @@ sort file.mtime desc
 
     def _load_custom_template(self, note_date: str, note_content: str) -> Optional[str]:
         """Load and populate a custom template from file"""
+        if self.custom_template_path is None:
+            logger.warning("Custom template path is not configured")
+            return None
+            
         try:
             with open(self.custom_template_path, "r", encoding="utf-8") as f:
                 template = f.read()
@@ -267,7 +275,7 @@ class NoteManager:
     def get_note_path(self, note_date: str) -> str:
         """Get the full path to a daily note file"""
         vault_path = self.config["obsidian_vault_path"]
-        if vault_path is None:
+        if not vault_path:  # This handles both None and empty string
             raise ValueError("Obsidian vault path is not configured")
         return os.path.join(vault_path, f"{note_date}.md")
 
@@ -393,7 +401,9 @@ class NoterCLI:
                 tags = [tag.strip() for tag in args.tags.split(",")]
 
             # Add the note
-            note_date = datetime.now().strftime(config.get("date_format", "%Y-%m-%d"))
+            # Get the date format with a guaranteed str type
+            date_format: str = config.get("date_format") or "%Y-%m-%d"
+            note_date = datetime.now().strftime(date_format)
             success = note_manager.append_to_note(note_content, note_date, tags)
 
             if success:
