@@ -1,4 +1,4 @@
-name: Python application tests
+name: Python Tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
