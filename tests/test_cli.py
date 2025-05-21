@@ -14,7 +14,11 @@ def cli():
 
 def test_cli_with_direct_note(cli, tmp_path):
     """Test CLI with direct note input"""
-    test_config = {"obsidian_vault_path": str(tmp_path), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    test_config = {
+        "obsidian_vault_path": str(tmp_path),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
     config_file = tmp_path / "config.json"
     config_file.write_text(json.dumps(test_config), encoding="utf-8")
 
@@ -25,11 +29,25 @@ def test_cli_with_direct_note(cli, tmp_path):
 
 def test_cli_with_tags(cli, tmp_path):
     """Test CLI with tags argument"""
-    test_config = {"obsidian_vault_path": str(tmp_path), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    test_config = {
+        "obsidian_vault_path": str(tmp_path),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
     config_file = tmp_path / "config.json"
     config_file.write_text(json.dumps(test_config), encoding="utf-8")
 
-    with patch("sys.argv", ["noter", "Tagged note", "--tags", "test,important", "--config", str(config_file)]):
+    with patch(
+        "sys.argv",
+        [
+            "noter",
+            "Tagged note",
+            "--tags",
+            "test,important",
+            "--config",
+            str(config_file),
+        ],
+    ):
         result = cli.run()
         assert result == 0
 
@@ -59,12 +77,17 @@ def test_cli_with_invalid_config(cli, tmp_path):
 
 def test_cli_interactive_mode(cli, tmp_path):
     """Test CLI in interactive mode"""
-    test_config = {"obsidian_vault_path": str(tmp_path), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    test_config = {
+        "obsidian_vault_path": str(tmp_path),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
     config_file = tmp_path / "config.json"
     config_file.write_text(json.dumps(test_config), encoding="utf-8")
 
-    with patch("sys.argv", ["noter", "--config", str(config_file)]), patch(
-        "builtins.input", return_value="Interactive note"
+    with (
+        patch("sys.argv", ["noter", "--config", str(config_file)]),
+        patch("builtins.input", return_value="Interactive note"),
     ):
         result = cli.run()
         assert result == 0

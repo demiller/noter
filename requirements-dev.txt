@@ -11,4 +11,3 @@ mypy==1.15.0
 # Build and packaging
 build>=0.10.0
 twine>=4.0.0
-

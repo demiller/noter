@@ -9,7 +9,9 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 
 # Setup basic logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger("noter")
 
 
@@ -45,8 +47,12 @@ class ConfigManager:
             if not os.path.exists(self.config_path):
                 with open(self.config_path, "w", encoding="utf-8") as f:
                     json.dump(self.default_config, f, indent=4)
-                logger.info(f"Configuration file created at: {os.path.abspath(self.config_path)}")
-                logger.info("Please update the Obsidian vault path in the config file before continuing.")
+                logger.info(
+                    f"Configuration file created at: {os.path.abspath(self.config_path)}"
+                )
+                logger.info(
+                    "Please update the Obsidian vault path in the config file before continuing."
+                )
                 return None
 
             with open(self.config_path, "r", encoding="utf-8") as f:
@@ -58,7 +64,9 @@ class ConfigManager:
                 logger.error("Error: Obsidian vault path is not configured")
                 return None
             if not os.path.exists(vault_path):
-                logger.error(f"Error: Obsidian vault directory not found at: {vault_path}")
+                logger.error(
+                    f"Error: Obsidian vault directory not found at: {vault_path}"
+                )
                 logger.error(f"Please update the path in {self.config_path}")
                 return None
 
@@ -82,7 +90,9 @@ class TemplateManager:
         template = None
         # Try custom template if available
         if self.custom_template_path and os.path.exists(self.custom_template_path):
-            logger.info(f"Attempting to use custom template from: {self.custom_template_path}")
+            logger.info(
+                f"Attempting to use custom template from: {self.custom_template_path}"
+            )
             template = self._load_custom_template(note_date, note_content)
             if template is None:
                 logger.warning("Falling back to default template")
@@ -109,11 +119,11 @@ aliases: []
 ## ☀️ Summary
 
 > What happened today? What did you think about? What patterns or themes emerged?
-- 
+-
 
 ## ✅ Tasks
 
-- 
+-
 
 ## 🔁 Reviews or Highlights Revisited
 
@@ -197,7 +207,14 @@ sort file.mtime desc
         import re
 
         # Define the valid variable names
-        valid_variable_names = ["note_date", "weekday", "month", "day", "year", "note_content"]
+        valid_variable_names = [
+            "note_date",
+            "weekday",
+            "month",
+            "day",
+            "year",
+            "note_content",
+        ]
 
         # Check for mismatched braces - look for {{ without matching }}
         open_braces = template.count("{{")
@@ -219,7 +236,9 @@ sort file.mtime desc
             malformed_vars = re.search(malformed_pattern, template)
 
             if malformed_vars:
-                logger.warning("Malformed template variables found: single braces that aren't part of variable syntax")
+                logger.warning(
+                    "Malformed template variables found: single braces that aren't part of variable syntax"
+                )
                 raise ValueError("Template contains malformed variables")
 
             # Check for nested braces
@@ -230,7 +249,11 @@ sort file.mtime desc
                 raise ValueError("Template contains nested variable braces")
 
             # Check for unknown variables
-            unknown_vars = [var.strip() for var in template_vars if var.strip() not in valid_variable_names]
+            unknown_vars = [
+                var.strip()
+                for var in template_vars
+                if var.strip() not in valid_variable_names
+            ]
             if unknown_vars:
                 logger.warning("Template contains unresolved variables")
                 raise ValueError("Template contains unknown variables")
@@ -251,13 +274,17 @@ sort file.mtime desc
         # This pattern finds a single { or } that isn't part of {{ or }}
         single_brace_pattern = r"(?<!\{)\{(?!\{)|(?<!\})\}(?!\})"
         if re.search(single_brace_pattern, template):
-            raise ValueError("Template contains unpaired braces after variable replacement")
+            raise ValueError(
+                "Template contains unpaired braces after variable replacement"
+            )
 
         # Check for empty sections that might indicate failed replacements
         # This pattern looks for ## headers with no content between them
         empty_section_pattern = r"##\s*\n\n##"
         if re.search(empty_section_pattern, template):
-            raise ValueError("Template contains empty sections after variable replacement")
+            raise ValueError(
+                "Template contains empty sections after variable replacement"
+            )
 
         # Ensure template contains some basic content after variable replacement
         if not template.strip():
@@ -268,7 +295,9 @@ sort file.mtime desc
 class NoteManager:
     """Manages notes and their addition to files"""
 
-    def __init__(self, config: Dict[str, Optional[str]], template_manager: TemplateManager) -> None:
+    def __init__(
+        self, config: Dict[str, Optional[str]], template_manager: TemplateManager
+    ) -> None:
         self.config = config
         self.template_manager = template_manager
 
@@ -279,11 +308,15 @@ class NoteManager:
             raise ValueError("Obsidian vault path is not configured")
         return os.path.join(vault_path, f"{note_date}.md")
 
-    def append_to_note(self, note: str, note_date: str, tags: Optional[List[str]] = None) -> bool:
+    def append_to_note(
+        self, note: str, note_date: str, tags: Optional[List[str]] = None
+    ) -> bool:
         """Add a note to the Notes & Observations section of the daily note file"""
         try:
             note_path = self.get_note_path(note_date)
-            timestamp = datetime.now().strftime(self.config.get("time_format") or "%H:%M")
+            timestamp = datetime.now().strftime(
+                self.config.get("time_format") or "%H:%M"
+            )
 
             # Format the note with tags if provided
             tag_str = ""
@@ -294,7 +327,11 @@ class NoteManager:
 
             if not os.path.exists(note_path):
                 with open(note_path, "w", encoding="utf-8") as file:
-                    file.write(self.template_manager.create_basic_template(note_date, formatted_note.rstrip()))
+                    file.write(
+                        self.template_manager.create_basic_template(
+                            note_date, formatted_note.rstrip()
+                        )
+                    )
                 logger.info(f"Created new daily note file for {note_date}")
                 return True
 
@@ -365,9 +402,13 @@ class NoterCLI:
         self.parser = self._create_parser()
 
     def _create_parser(self) -> argparse.ArgumentParser:
-        parser = argparse.ArgumentParser(description="Noter - Manage your Obsidian daily notes")
+        parser = argparse.ArgumentParser(
+            description="Noter - Manage your Obsidian daily notes"
+        )
         parser.add_argument("note", nargs="?", help="Note content to add")
-        parser.add_argument("--tags", help="Comma-separated list of tags to add to the note")
+        parser.add_argument(
+            "--tags", help="Comma-separated list of tags to add to the note"
+        )
         parser.add_argument("--config", help="Path to custom config file")
         parser.add_argument("--version", action="version", version="Noter v1.1.2")
         return parser
@@ -407,10 +448,14 @@ class NoterCLI:
             success = note_manager.append_to_note(note_content, note_date, tags)
 
             if success:
-                logger.info(f"✓ Note successfully added to {note_manager.get_note_path(note_date)}")
+                logger.info(
+                    f"✓ Note successfully added to {note_manager.get_note_path(note_date)}"
+                )
                 return 0
             else:
-                logger.error(f"✗ Failed to add note to {note_manager.get_note_path(note_date)}")
+                logger.error(
+                    f"✗ Failed to add note to {note_manager.get_note_path(note_date)}"
+                )
                 return 1
 
         except KeyboardInterrupt:

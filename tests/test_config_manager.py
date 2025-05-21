@@ -81,7 +81,10 @@ def test_invalid_json_config(tmp_path):
 def test_missing_required_fields(tmp_path):
     """Test config missing required fields"""
     config_file = tmp_path / "test_config.json"
-    test_config = {"date_format": "%Y-%m-%d", "time_format": "%H:%M"}  # Missing obsidian_vault_path
+    test_config = {
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }  # Missing obsidian_vault_path
     config_file.write_text(json.dumps(test_config), encoding="utf-8")
 
     config_manager = ConfigManager(str(config_file))

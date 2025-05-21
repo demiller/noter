@@ -40,9 +40,15 @@ def test_invalid_template_content(tmp_path, capture_logs):
     """Test handling of invalid template content with malformed variables"""
     # Create a template with malformed variables
     template_file = tmp_path / "invalid_template.md"
-    template_file.write_text("Invalid {{template} content with {mismatched} braces", encoding="utf-8")
+    template_file.write_text(
+        "Invalid {{template} content with {mismatched} braces", encoding="utf-8"
+    )
 
-    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    config = {
+        "template_path": str(template_file),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
 
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "Test note")
@@ -65,7 +71,11 @@ def test_invalid_template_content_another_type(tmp_path, capture_logs):
     template_file = tmp_path / "unbalanced_template.md"
     template_file.write_text("Template with {{extra {{ braces}}", encoding="utf-8")
 
-    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    config = {
+        "template_path": str(template_file),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
 
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "Test note")
@@ -95,10 +105,16 @@ title: "📅 {{note_date}} 📝"
 """
     template_file.write_text(template_content, encoding="utf-8")
 
-    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    config = {
+        "template_path": str(template_file),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
 
     template_manager = TemplateManager(config)
-    result = template_manager.create_basic_template("2025-05-21", "Test note with 😊 emoji")
+    result = template_manager.create_basic_template(
+        "2025-05-21", "Test note with 😊 emoji"
+    )
 
     # Verify template elements and emojis
     assert "📅 2025-05-21 📝" in result
@@ -130,7 +146,11 @@ tags: [custom, template]
 """
     template_file.write_text(template_content, encoding="utf-8")
 
-    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    config = {
+        "template_path": str(template_file),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
 
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "This is a test note")
@@ -159,7 +179,11 @@ title: "{{note_date}}"
 """
     template_file.write_text(template_content, encoding="utf-8")
 
-    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    config = {
+        "template_path": str(template_file),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
 
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "Test note")
@@ -175,7 +199,9 @@ title: "{{note_date}}"
     assert "Successfully applied custom template" not in log_content
 
 
-def test_template_success_message_only_appears_for_valid_templates(tmp_path, capture_logs):
+def test_template_success_message_only_appears_for_valid_templates(
+    tmp_path, capture_logs
+):
     """Test that success message only appears for valid templates"""
     # 1. First test with valid template
     valid_template_file = tmp_path / "valid.md"
@@ -186,7 +212,11 @@ title: "{{note_date}}"
 """
     valid_template_file.write_text(valid_template_content, encoding="utf-8")
 
-    config = {"template_path": str(valid_template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    config = {
+        "template_path": str(valid_template_file),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
 
     template_manager = TemplateManager(config)
     template_manager.create_basic_template("2025-05-21", "Test note")

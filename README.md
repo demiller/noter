@@ -81,7 +81,7 @@ To run noter from any directory:
    ```
    python noter.py
    ```
-   or 
+   or
    ```
    .\noter.exe
    ```
@@ -103,7 +103,7 @@ To run noter from any directory:
 - **YAML Frontmatter**: Automatically adds complete YAML frontmatter for new notes.
 - **Template Compatible**: Works with your existing Obsidian daily note templates.
 - **Section Awareness**: Intelligently adds notes to the "Notes & Observations" section.
-- **Smart Formatting**: 
+- **Smart Formatting**:
   - Adds notes directly after existing bullets without extra spacing
   - Only adds empty bullets in empty sections
   - Maintains clean formatting between notes
@@ -153,11 +153,11 @@ aliases: []
 ## ☀️ Summary
 
 > What happened today? What did you think about? What patterns or themes emerged?
-- 
+-
 
 ## ✅ Tasks
 
-- 
+-
 
 ## 🔁 Reviews or Highlights Revisited
 
@@ -181,7 +181,7 @@ sort file.mtime desc
 ## ✍️ Notes & Observations
 
 - [HH:MM] Your note content here
-- 
+-
 ```
 
 The script will:
@@ -198,7 +198,7 @@ The script follows these rules when adding notes:
 
 1. **New File**: Creates a complete template with YAML frontmatter and all sections
 2. **Empty Section**: Adds the note followed by an empty bullet
-3. **Existing Notes**: 
+3. **Existing Notes**:
    - Adds the new note directly after the last existing note
    - Maintains single-line spacing between notes
    - Does not add empty bullets after existing content

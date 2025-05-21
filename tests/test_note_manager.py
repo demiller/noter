@@ -9,7 +9,11 @@ from noter import NoteManager, TemplateManager
 @pytest.fixture
 def test_note_setup(tmp_path):
     """Setup test environment with config and managers"""
-    config = {"obsidian_vault_path": str(tmp_path), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    config = {
+        "obsidian_vault_path": str(tmp_path),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
     template_manager = TemplateManager(config)
     note_manager = NoteManager(config, template_manager)
     return note_manager, config
@@ -224,7 +228,9 @@ def test_empty_bullet_handling(test_note_setup):
             if notes_section and line.strip() == "-":
                 empty_bullets += 1
 
-    assert empty_bullets == 0, "Empty bullets should be removed when adding to existing notes"
+    assert (
+        empty_bullets == 0
+    ), "Empty bullets should be removed when adding to existing notes"
 
 
 def test_note_insertion_order(test_note_setup):

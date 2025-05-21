@@ -66,7 +66,11 @@ title: "{{note_date}}"
 """
     template_file.write_text(template_content)
 
-    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    config = {
+        "template_path": str(template_file),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
 
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "Test note")
@@ -80,7 +84,11 @@ title: "{{note_date}}"
 
 def test_missing_template_fallback(tmp_path):
     """Test fallback to default template"""
-    config = {"template_path": str(tmp_path / "nonexistent.md"), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    config = {
+        "template_path": str(tmp_path / "nonexistent.md"),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
 
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "Test note")
@@ -96,7 +104,11 @@ def test_invalid_template_content(tmp_path):
     template_file = tmp_path / "invalid.md"
     template_file.write_text("Invalid {{template} content")
 
-    config = {"template_path": str(template_file), "date_format": "%Y-%m-%d", "time_format": "%H:%M"}
+    config = {
+        "template_path": str(template_file),
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+    }
 
     template_manager = TemplateManager(config)
     result = template_manager.create_basic_template("2025-05-21", "Test note")
