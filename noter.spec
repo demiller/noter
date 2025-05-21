@@ -2,10 +2,10 @@
 
 
 a = Analysis(
-    ['noter.py'],
+    ['main.py'],  # Changed from noter.py to main.py
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('config.json', '.')],  # Include default config file
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
