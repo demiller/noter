@@ -16,7 +16,7 @@ def test_cli_with_direct_note(cli, tmp_path):
         "time_format": "%H:%M"
     }
     config_file = tmp_path / "config.json"
-    config_file.write_text(json.dumps(test_config))
+    config_file.write_text(json.dumps(test_config), encoding="utf-8")
     
     with patch('sys.argv', ['noter', 'Test note', '--config', str(config_file)]):
         result = cli.run()
@@ -30,7 +30,7 @@ def test_cli_with_tags(cli, tmp_path):
         "time_format": "%H:%M"
     }
     config_file = tmp_path / "config.json"
-    config_file.write_text(json.dumps(test_config))
+    config_file.write_text(json.dumps(test_config), encoding="utf-8")
     
     with patch('sys.argv', ['noter', 'Tagged note', '--tags', 'test,important', '--config', str(config_file)]):
         result = cli.run()
@@ -39,7 +39,7 @@ def test_cli_with_tags(cli, tmp_path):
         # Verify tags in note
         note_path = tmp_path / datetime.now().strftime("%Y-%m-%d.md")
         assert note_path.exists()
-        content = note_path.read_text()
+        content = note_path.read_text(encoding="utf-8")
         assert "#test #important" in content
 
 def test_cli_with_empty_note(cli):
@@ -51,7 +51,7 @@ def test_cli_with_empty_note(cli):
 def test_cli_with_invalid_config(cli, tmp_path):
     """Test CLI with invalid config file"""
     invalid_config = tmp_path / "invalid_config.json"
-    invalid_config.write_text("invalid json")
+    invalid_config.write_text("invalid json", encoding="utf-8")
     
     with patch('sys.argv', ['noter', 'Test note', '--config', str(invalid_config)]):
         result = cli.run()
@@ -65,7 +65,7 @@ def test_cli_interactive_mode(cli, tmp_path):
         "time_format": "%H:%M"
     }
     config_file = tmp_path / "config.json"
-    config_file.write_text(json.dumps(test_config))
+    config_file.write_text(json.dumps(test_config), encoding="utf-8")
     
     with patch('sys.argv', ['noter', '--config', str(config_file)]), \
          patch('builtins.input', return_value='Interactive note'):
@@ -75,6 +75,6 @@ def test_cli_interactive_mode(cli, tmp_path):
         # Verify note was added
         note_path = tmp_path / datetime.now().strftime("%Y-%m-%d.md")
         assert note_path.exists()
-        content = note_path.read_text()
+        content = note_path.read_text(encoding="utf-8")
         assert "Interactive note" in content
 

@@ -19,7 +19,7 @@ def test_environment(tmp_path):
         "date_format": "%Y-%m-%d",
         "time_format": "%H:%M"
     }
-    config_file.write_text(json.dumps(config))
+    config_file.write_text(json.dumps(config), encoding="utf-8")
     
     return {
         "vault_path": vault_path,
@@ -55,7 +55,7 @@ def test_full_workflow(test_environment):
     assert success
     
     # Verify content
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.read()
         assert first_note in content
         assert second_note in content
@@ -80,7 +80,7 @@ def test_cli_integration(test_environment):
     
     # Verify results
     note_path = os.path.join(env["vault_path"], f"{datetime.now().strftime('%Y-%m-%d')}.md")
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.read()
         assert "CLI test note" in content
         assert "Interactive test note" in content

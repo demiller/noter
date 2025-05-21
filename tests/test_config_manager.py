@@ -16,7 +16,7 @@ def test_config_file(tmp_path):
         "time_format": "%H:%M",
         "template_path": None
     }
-    config_file.write_text(json.dumps(test_config))
+    config_file.write_text(json.dumps(test_config), encoding="utf-8")
     return config_file
 
 def test_load_valid_config(test_config_file):
@@ -41,7 +41,7 @@ def test_create_default_config(tmp_path):
     assert config_path.exists()
     
     # Check default config content
-    with open(config_path, 'r') as f:
+    with open(config_path, 'r', encoding="utf-8") as f:
         default_config = json.load(f)
     assert "obsidian_vault_path" in default_config
     assert "date_format" in default_config
@@ -55,7 +55,7 @@ def test_invalid_vault_path(tmp_path):
         "date_format": "%Y-%m-%d",
         "time_format": "%H:%M"
     }
-    config_file.write_text(json.dumps(test_config))
+    config_file.write_text(json.dumps(test_config), encoding="utf-8")
     
     config_manager = ConfigManager(str(config_file))
     config = config_manager.load_config()
@@ -64,7 +64,7 @@ def test_invalid_vault_path(tmp_path):
 def test_invalid_json_config(tmp_path):
     """Test handling of invalid JSON in config file"""
     config_file = tmp_path / "test_config.json"
-    config_file.write_text("Invalid JSON content")
+    config_file.write_text("Invalid JSON content", encoding="utf-8")
     
     config_manager = ConfigManager(str(config_file))
     config = config_manager.load_config()
@@ -77,7 +77,7 @@ def test_missing_required_fields(tmp_path):
         "date_format": "%Y-%m-%d",  # Missing obsidian_vault_path
         "time_format": "%H:%M"
     }
-    config_file.write_text(json.dumps(test_config))
+    config_file.write_text(json.dumps(test_config), encoding="utf-8")
     
     config_manager = ConfigManager(str(config_file))
     config = config_manager.load_config()
@@ -86,12 +86,12 @@ def test_missing_required_fields(tmp_path):
 def test_custom_date_format(test_config_file):
     """Test loading config with custom date format"""
     # Modify existing config
-    with open(test_config_file, 'r') as f:
+    with open(test_config_file, 'r', encoding="utf-8") as f:
         config_data = json.load(f)
     
     config_data["date_format"] = "%d-%m-%Y"
     
-    with open(test_config_file, 'w') as f:
+    with open(test_config_file, 'w', encoding="utf-8") as f:
         json.dump(config_data, f)
     
     config_manager = ConfigManager(str(test_config_file))

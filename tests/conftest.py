@@ -1,6 +1,11 @@
 import pytest
 import os
 import json
+import sys
+
+# Add the parent directory to the path to make noter importable
+sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
+
 from noter import ConfigManager, TemplateManager, NoteManager
 
 @pytest.fixture
@@ -24,7 +29,7 @@ def test_config(test_vault):
 def test_config_file(test_config, tmp_path):
     """Create a test config file"""
     config_file = tmp_path / "config.json"
-    config_file.write_text(json.dumps(test_config))
+    config_file.write_text(json.dumps(test_config), encoding="utf-8")
     return config_file
 
 @pytest.fixture

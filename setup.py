@@ -1,8 +1,13 @@
+# -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
+
+# Read README with UTF-8 encoding
+with open("README.md", encoding="utf-8") as f:
+    long_description = f.read()
 
 setup(
     name="noter",
-    version="1.2.0",
+    version="1.1.1",
     packages=find_packages(),
     python_requires=">=3.8",
     install_requires=[],
@@ -13,7 +18,7 @@ setup(
     },
     author="Doug Miller",
     description="A tool for managing Obsidian daily notes",
-    long_description=open("README.md").read(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/demiller/noter",
     classifiers=[
