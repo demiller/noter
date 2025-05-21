@@ -7,7 +7,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="noter",
-    version="1.1.1",
+    version="1.1.2",
     packages=find_packages(),
     python_requires=">=3.8",
     install_requires=[],
