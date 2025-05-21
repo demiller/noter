@@ -2,9 +2,11 @@
 
 A Python script for managing daily notes in [Obsidian](https://obsidian.md/) with timestamp support.
 
+![Version](https://img.shields.io/badge/version-v1.1.2-blue)
+
 ## Description
 
-Noter is a simple command-line utility designed to help you quickly add timestamped notes to your daily note files in Obsidian. It intelligently integrates with your existing Obsidian templates and adds entries to the "Notes & Observations" section of your daily notes.
+Noter (v1.1.2) is a simple command-line utility designed to help you quickly add timestamped notes to your daily note files in Obsidian. It intelligently integrates with your existing Obsidian templates and adds entries to the "Notes & Observations" section of your daily notes.
 
 The script automatically:
 - Creates new daily note files if they don't exist (with full YAML frontmatter)
@@ -15,7 +17,7 @@ The script automatically:
 
 ## Requirements
 
-- Python 3.6 or higher
+- Python 3.11 or higher
 - Windows, macOS, or Linux operating system
 - An existing Obsidian vault
 
@@ -32,7 +34,7 @@ The script automatically:
 2. Create a `config.json` file in the same directory:
    ```json
    {
-       "obsidian_vault_path": "C:/Users/YourUsername/Obsidian Vault/Daily Notes"
+       "obsidian_vault_path": "C:/Users/DougMiller/OneDrive - Brightworks Group, LLC/Obsidian_Vault/Daily Notes"
    }
    ```
 
@@ -69,7 +71,7 @@ The script automatically:
 
 To run noter from any directory:
 
-1. Copy both `noter.exe` and `config.json` to `%USERPROFILE%\AppData\Local\Microsoft\WindowsApps`
+1. Copy both `noter.exe` and `config.json` to a directory in your PATH (e.g., `C:\Users\DougMiller\bin`)
 2. Update the vault path in the copied `config.json`
 3. You can now run `noter` from any directory
 
@@ -116,7 +118,7 @@ Noter uses a `config.json` file for all configuration settings. This file should
 Example `config.json`:
 ```json
 {
-    "obsidian_vault_path": "C:/Users/YourUsername/Obsidian Vault/Daily Notes"
+    "obsidian_vault_path": "C:/Users/DougMiller/OneDrive - Brightworks Group, LLC/Obsidian_Vault/Daily Notes"
 }
 ```
 
@@ -126,8 +128,8 @@ Important notes:
 - You must update the path to match your actual Obsidian vault location
 - When moving the executable, always bring the config file with it
 
-If you're using the Windows PATH installation method (copying to WindowsApps), make sure to:
-1. Keep both the executable and config file in the WindowsApps directory
+If you're using the Windows PATH installation method, make sure to:
+1. Keep both the executable and config file in the same directory (e.g., `C:\Users\DougMiller\bin`)
 2. Always edit the config file in that location, not in the original directory
 
 ## Daily Note Format
@@ -296,7 +298,7 @@ The CI pipeline will automatically:
 
 ### Release Process
 
-1. Update version number in noter.py
+1. Update version number in both `setup.py` and `noter/__init__.py`
 2. Update CHANGELOG.md
 3. Create and push a new tag
 4. GitHub Actions will automatically:
