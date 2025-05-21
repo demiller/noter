@@ -1,0 +1,22 @@
+coverage:
+  status:
+    project:
+      default:
+        # Allow coverage to drop by 1% before failing
+        target: auto
+        threshold: 1%
+    patch:
+      default:
+        # New code should have at least 90% coverage
+        target: 90%
+        threshold: 1%
+
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: true
+
+ignore:
+  - "tests/**/*"
+  - "setup.py"
+

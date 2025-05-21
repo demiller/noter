@@ -216,3 +216,90 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## Development
+
+### Setting Up Development Environment
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/demiller/noter.git
+   cd noter
+   ```
+
+2. Install development dependencies:
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+
+### Running Tests
+
+The project uses pytest for testing. To run the tests:
+
+```bash
+# Run all tests
+pytest
+
+# Run tests with coverage report
+pytest --cov=noter
+
+# Run a specific test file
+pytest tests/test_note_manager.py
+
+# Run tests matching a pattern
+pytest -k "test_append"
+```
+
+### Code Style and Linting
+
+The project uses several tools to ensure code quality:
+
+- Black for code formatting
+- isort for import sorting
+- flake8 for style guide enforcement
+- mypy for type checking
+
+To check code style:
+
+```bash
+# Format code with black
+black .
+
+# Sort imports
+isort .
+
+# Run flake8
+flake8 .
+
+# Run type checking
+mypy noter tests
+```
+
+### Pull Request Process
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes, ensuring:
+   - All tests pass
+   - Code is formatted with black
+   - Imports are sorted with isort
+   - No flake8 warnings
+   - Type hints are complete and mypy passes
+   - New features have tests
+4. Update documentation as needed
+5. Submit a pull request
+
+The CI pipeline will automatically:
+- Run tests on multiple Python versions
+- Check code coverage
+- Verify code formatting and style
+- Run type checking
+
+### Release Process
+
+1. Update version number in noter.py
+2. Update CHANGELOG.md
+3. Create and push a new tag
+4. GitHub Actions will automatically:
+   - Run all tests
+   - Build the package
+   - Create a new release
