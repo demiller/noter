@@ -361,7 +361,7 @@ class NoterCLI:
         parser.add_argument("note", nargs="?", help="Note content to add")
         parser.add_argument("--tags", help="Comma-separated list of tags to add to the note")
         parser.add_argument("--config", help="Path to custom config file")
-        parser.add_argument("--version", action="version", version="Noter v1.1.0")
+        parser.add_argument("--version", action="version", version="Noter v1.1.1")
         return parser
 
     def run(self) -> int:
