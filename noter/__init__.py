@@ -6,7 +6,7 @@ import logging
 import os
 import sys
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 # Setup basic logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -28,16 +28,16 @@ def get_script_dir() -> str:
 class ConfigManager:
     """Manages the noter configuration"""
 
-    def __init__(self, config_path: Optional[str] = None):
+    def __init__(self, config_path: Optional[str] = None) -> None:
         self.config_path = config_path or os.path.join(get_script_dir(), "config.json")
-        self.default_config = {
+        self.default_config: Dict[str, Optional[str]] = {
             "obsidian_vault_path": "C:/Users/YourUsername/Obsidian Vault/Daily Notes",
             "date_format": "%Y-%m-%d",
             "time_format": "%H:%M",
             "template_path": None,
         }
 
-    def load_config(self) -> Optional[Dict]:
+    def load_config(self) -> Optional[Dict[str, Optional[str]]]:
         """Load configuration from file or create a default one"""
         import json
 
@@ -50,7 +50,7 @@ class ConfigManager:
                 return None
 
             with open(self.config_path, "r", encoding="utf-8") as f:
-                config = json.load(f)
+                config: Dict[str, Optional[str]] = json.load(f)
 
             # Validate the vault path exists
             if not os.path.exists(config["obsidian_vault_path"]):
@@ -69,7 +69,7 @@ class ConfigManager:
 class TemplateManager:
     """Manages note templates"""
 
-    def __init__(self, config: Dict):
+    def __init__(self, config: Dict[str, Optional[str]]) -> None:
         self.config = config
         self.custom_template_path = config.get("template_path")
 
@@ -260,19 +260,22 @@ sort file.mtime desc
 class NoteManager:
     """Manages notes and their addition to files"""
 
-    def __init__(self, config: Dict, template_manager: TemplateManager):
+    def __init__(self, config: Dict[str, Optional[str]], template_manager: TemplateManager) -> None:
         self.config = config
         self.template_manager = template_manager
 
     def get_note_path(self, note_date: str) -> str:
         """Get the full path to a daily note file"""
-        return os.path.join(self.config["obsidian_vault_path"], f"{note_date}.md")
+        vault_path = self.config["obsidian_vault_path"]
+        if vault_path is None:
+            raise ValueError("Obsidian vault path is not configured")
+        return os.path.join(vault_path, f"{note_date}.md")
 
     def append_to_note(self, note: str, note_date: str, tags: Optional[List[str]] = None) -> bool:
         """Add a note to the Notes & Observations section of the daily note file"""
         try:
             note_path = self.get_note_path(note_date)
-            timestamp = datetime.now().strftime(self.config.get("time_format", "%H:%M"))
+            timestamp = datetime.now().strftime(self.config.get("time_format") or "%H:%M")
 
             # Format the note with tags if provided
             tag_str = ""
@@ -350,7 +353,7 @@ class NoteManager:
 class NoterCLI:
     """Handles command line interface and user interaction"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.parser = self._create_parser()
 
     def _create_parser(self) -> argparse.ArgumentParser:
@@ -409,7 +412,7 @@ class NoterCLI:
 
 
 # Main entry point
-def main():
+def main() -> None:
     """Main entry point for the noter application"""
     cli = NoterCLI()
     sys.exit(cli.run())
