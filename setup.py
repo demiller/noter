@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 # Read README with UTF-8 encoding
 with open("README.md", encoding="utf-8") as f:

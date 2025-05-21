@@ -1,9 +1,11 @@
-import pytest
 import json
 import os
-from noter import ConfigManager, TemplateManager, NoteManager, NoterCLI
 from datetime import datetime
 from unittest.mock import patch
+
+import pytest
+
+from noter import ConfigManager, NoteManager, NoterCLI, TemplateManager
 
 
 @pytest.fixture

@@ -1,7 +1,9 @@
-import pytest
 import os
-from noter import NoteManager, TemplateManager
 from datetime import datetime
+
+import pytest
+
+from noter import NoteManager, TemplateManager
 
 
 @pytest.fixture

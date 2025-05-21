@@ -1,10 +1,12 @@
-import pytest
+import io
+import logging
 import os
 import re
-import io
 import sys
-import logging
 from unittest.mock import patch
+
+import pytest
+
 from noter import TemplateManager
 
 

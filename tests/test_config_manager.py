@@ -1,6 +1,8 @@
-import pytest
 import json
 import os
+
+import pytest
+
 from noter import ConfigManager
 
 

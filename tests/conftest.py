@@ -1,12 +1,13 @@
-import pytest
-import os
 import json
+import os
 import sys
+
+import pytest
 
 # Add the parent directory to the path to make noter importable
 sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 
-from noter import ConfigManager, TemplateManager, NoteManager
+from noter import ConfigManager, NoteManager, TemplateManager
 
 
 @pytest.fixture

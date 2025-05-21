@@ -1,8 +1,10 @@
-import pytest
 import json
-from noter import NoterCLI
 from datetime import datetime
 from unittest.mock import patch
+
+import pytest
+
+from noter import NoterCLI
 
 
 @pytest.fixture
