@@ -145,7 +145,7 @@ sort file.mtime desc
         if self.custom_template_path is None:
             logger.warning("Custom template path is not configured")
             return None
-            
+
         try:
             with open(self.custom_template_path, "r", encoding="utf-8") as f:
                 template = f.read()
