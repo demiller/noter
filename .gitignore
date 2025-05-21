@@ -1,6 +1,7 @@
+.coverage
 build/
 dist/
-__pycache__/
 *.pyc
-*.spec
-*.exe
+__pycache__/
+*.egg-info/
+test_release/

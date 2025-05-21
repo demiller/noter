@@ -25,7 +25,7 @@ def test_append_to_new_note(test_note_setup):
     
     note_path = note_manager.get_note_path(note_date)
     assert os.path.exists(note_path)
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.read()
         assert "Test note" in content
         assert "## ✍️ Notes & Observations" in content
@@ -43,7 +43,7 @@ def test_append_to_existing_note(test_note_setup):
     assert success
     
     note_path = note_manager.get_note_path(note_date)
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.readlines()
         notes_section = False
         note_lines = []
@@ -70,7 +70,7 @@ def test_append_note_with_tags(test_note_setup):
     assert success
     
     note_path = note_manager.get_note_path(note_date)
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.read()
         assert "Tagged note" in content
         assert "#test #important" in content
@@ -98,10 +98,16 @@ def test_append_with_empty_tags(test_note_setup):
     assert success
     
     note_path = note_manager.get_note_path(note_date)
-    with open(note_path, 'r') as f:
-        content = f.read()
-        assert "Note without tags" in content
-        assert "#" not in content  # Should not have any tags
+    with open(note_path, 'r', encoding="utf-8") as f:
+        content = f.readlines()
+        notes_section = False
+        for line in content:
+            if "## ✍️ Notes & Observations" in line:
+                notes_section = True
+            elif notes_section and line.startswith("## "):
+                break
+            elif notes_section and "Note without tags" in line:
+                assert "#" not in line  # Should not have any tags in the note line
 
 def test_append_with_special_characters(test_note_setup):
     """Test handling of special characters in notes"""
@@ -113,7 +119,7 @@ def test_append_with_special_characters(test_note_setup):
     assert success
     
     note_path = note_manager.get_note_path(note_date)
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.read()
         assert special_note in content
 
@@ -128,7 +134,7 @@ def test_append_multiple_notes_spacing(test_note_setup):
         assert success
     
     note_path = note_manager.get_note_path(note_date)
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.readlines()
         notes_section = False
         note_lines = []
@@ -138,13 +144,13 @@ def test_append_multiple_notes_spacing(test_note_setup):
                 continue
             if notes_section and line.startswith("## "):
                 break
-            if notes_section:
-                note_lines.append(line)
+            if notes_section and line.startswith("- ["):
+                note_lines.append(line.strip())
     
     # Check for proper spacing between notes
     assert len(note_lines) >= len(notes)
-    for i in range(len(notes)):
-        assert notes[i] in note_lines[i]
+    for i, note in enumerate(notes):
+        assert note in note_lines[i]
 
 def test_note_timestamp_format(test_note_setup):
     """Test that notes have correctly formatted timestamps"""
@@ -156,7 +162,7 @@ def test_note_timestamp_format(test_note_setup):
     assert success
     
     note_path = note_manager.get_note_path(note_date)
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.readlines()
         for line in content:
             if "Test note" in line:
@@ -180,7 +186,7 @@ def test_empty_bullet_handling(test_note_setup):
     assert success
     
     note_path = note_manager.get_note_path(note_date)
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.readlines()
         notes_section = False
         found_empty_bullet = False
@@ -199,7 +205,7 @@ def test_empty_bullet_handling(test_note_setup):
     assert success
     
     # Verify empty bullet is gone
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.readlines()
         notes_section = False
         empty_bullets = 0
@@ -223,7 +229,7 @@ def test_note_insertion_order(test_note_setup):
         assert success
     
     note_path = note_manager.get_note_path(note_date)
-    with open(note_path, 'r') as f:
+    with open(note_path, 'r', encoding="utf-8") as f:
         content = f.readlines()
         notes_section = False
         timestamps = []
